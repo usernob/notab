@@ -1,17 +1,28 @@
 <script lang="ts">
+	import { fetchDuckDuckGoSuggestions } from '@/lib/suggestion';
+	import { debounce } from '@/lib/utilities';
+	import Suggestion from './Suggestion.svelte';
+
 	export let show: boolean = false;
 
 	let input: HTMLTextAreaElement;
 	let dialog: HTMLDialogElement;
 
-	const onInput = (e: Event) => {
+	let suggestion: string[] = [];
+
+	const onInput = async (e: Event) => {
 		const target = e.target as HTMLTextAreaElement;
 		if (target.value.length <= 0) return closeDialog();
-		console.log(target.scrollHeight);
 		target.style.height = '0px';
 
 		// TODO: fix bug when height is odd, there is a horizontal line at bottom
 		target.style.height = `${target.scrollHeight % 2 == 0 ? target.scrollHeight : target.scrollHeight + 1}px`;
+		const ddgs = debounce(async () => {
+			console.log('hiii');
+			const ddgSuggestions = await fetchDuckDuckGoSuggestions(target.value);
+			suggestion = [...ddgSuggestions];
+		}, 200);
+		ddgs();
 	};
 
 	const onKeyDown = (e: KeyboardEvent) => {
@@ -33,6 +44,7 @@
 		dialog.close();
 		input.blur();
 		input.value = '';
+		suggestion = [];
 	};
 </script>
 
@@ -47,4 +59,5 @@
 		></textarea>
 		<menu class="suggestions"></menu>
 	</form>
+	<Suggestion bind:data={suggestion} />
 </dialog>
