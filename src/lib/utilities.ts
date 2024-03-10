@@ -11,3 +11,11 @@ export const debounce = <T extends (...args: any[]) => any>(
     timeout = setTimeout(() => func.apply(this, args), wait);
   };
 };
+
+export const hasProtocol = (s: string) => {
+  return /^[a-zA-Z]+:\/\//i.test(s);
+};
+
+export const isUrl = (s: string) => {
+  return /^((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)$/i.test(s);
+};

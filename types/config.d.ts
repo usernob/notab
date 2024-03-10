@@ -91,4 +91,6 @@ interface Command {
    * @type {string}
    */
   searchTemplate?: string;
+
+  suggestions?: string[];
 }

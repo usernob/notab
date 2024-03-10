@@ -2,72 +2,37 @@ window.CONFIG = {
   commandPathDelimiter: '/',
   commandSearchDelimiter: ' ',
   defaultSearchTemplate: 'https://duckduckgo.com/?q={}',
-  openLinksInNewTab: true,
+  openLinksInNewTab: false,
   suggestionLimit: 4,
   commands: {
-    g: {
-      name: 'github',
-      url: 'https://github.com',
+    a: { name: 'Chat', url: 'https://chat.openai.com' },
+    b: { name: 'Dribbble', url: 'https://dribbble.com/shots/recent' },
+    c: { name: 'Calendar', url: 'https://calendar.google.com' },
+    d: { name: 'Drive', url: 'https://drive.google.com' },
+    f: { name: 'Figma', url: 'https://www.figma.com' },
+    g: { name: 'GitHub', url: 'https://github.com' },
+    k: { name: 'Keep', url: 'https://keep.google.com' },
+    m: { name: 'Mail', url: 'https://mail.proton.me/u/0/inbox' },
+    n: { name: 'Notion', url: 'https://www.notion.so' },
+    p: { name: 'Pomodoro', url: 'https://pomodoro.xvvvyz.xyz' },
+    r: {
+      name: 'Reddit',
+      suggestions: ['r/r/webdev', 'r/r/dataisbeautiful', 'r/r/fujix', 'r/r/leetcode'],
+      url: 'https://reddit.com',
     },
-    e: {
-      name: 'github',
-      url: 'https://github.com',
-    },
-    w: {
-      name: 'github',
-      url: 'https://github.com',
-    },
-    q: {
-      name: 'github',
-      url: 'https://github.com',
-    },
-    d: {
-      name: 'github',
-      url: 'https://github.com',
-    },
-    t: {
-      name: 'github',
-      url: 'https://github.com',
-    },
-    c: {
-      name: 'github',
-      url: 'https://github.com',
-    },
-    m: {
-      name: 'github',
-      url: 'https://github.com',
-    },
-    p: {
-      name: 'github',
-      url: 'https://github.com',
-    },
+    s: { name: 'Supabase', url: 'https://supabase.com/dashboard/projects' },
+    t: { name: 'Translate', url: 'https://www.deepl.com/translator' },
+    v: { name: 'Vercel', url: 'https://vercel.com/dashboard' },
     y: {
-      name: 'github',
-      url: 'https://github.com',
+      name: 'YouTube',
+      searchTemplate: '/results?search_query={}',
+      url: 'https://youtube.com/feed/subscriptions',
     },
-    u: {
-      name: 'github',
-      url: 'https://github.com',
-    },
-    i: {
-      name: 'github',
-      url: 'https://github.com',
-    },
-    k: {
-      name: 'github',
-      url: 'https://github.com',
-    },
-    n: {
-      name: 'github',
-      url: 'https://github.com',
-    },
-    v: {
-      name: 'github',
-      url: 'https://github.com',
-    },
-    h: {
-      name: 'github',
-      url: 'https://github.com',
+    0: {
+      name: 'localhost',
+      searchTemplate: ':{}',
+      suggestions: ['0 54323', '0 54324'],
+      url: 'http://localhost:3000',
     },
   },
 };
