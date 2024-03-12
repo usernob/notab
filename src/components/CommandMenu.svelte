@@ -8,14 +8,14 @@
 	class:hidden={!show}
 >
 	{#each Object.entries(listCommands) as [prefix, { name, url }] (prefix)}
-		<div class="group flex w-full cursor-pointer items-center gap-4 p-4">
+		<a href={url} class="group flex w-full cursor-pointer items-center gap-4 p-4">
 			<div class="mb-[4px] w-[3ch] text-center text-foreground-primary">{prefix}</div>
-			<div class="pl-2 pr-6 text-foreground-secondary group-hover:text-foreground-primary">
+			<div class="pl-2 text-foreground-secondary group-hover:text-foreground-primary">
 				{name
 					.split(' ')
 					.map((e) => e.charAt(0).toUpperCase() + e.slice(1))
 					.join(' ')}
 			</div>
-		</div>
+		</a>
 	{/each}
 </div>

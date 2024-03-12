@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { fetchDuckDuckGoSuggestions } from '@/lib/suggestion';
-	import { debounce } from '@/lib/utilities';
+	import { debounce, formatSearchUrl, hasProtocol, isUrl, splitUrl } from '@/lib/utilities';
 	import Suggestion from './Suggestion.svelte';
 
 	export let show: boolean = false;
@@ -21,14 +21,33 @@
 		const target = e.target as HTMLTextAreaElement;
 		if (target.value.length <= 0) return closeDialog();
 
+		const oq = parseQuery(target.value);
+
+		if (!oq.query) {
+			closeDialog();
+			return;
+		}
 		fixInputHeight(target);
 
-		const ddgs = debounce(async () => {
-			const ddgSuggestions = await fetchDuckDuckGoSuggestions(target.value);
-			suggestion = [...ddgSuggestions];
-			selectedSuggestionIndex = null;
-		}, 200);
-		ddgs();
+		let suggestions = window.CONFIG.commands[oq.query]?.suggestions ?? [];
+		console.log(oq, suggestions);
+		if (oq.search && suggestions.length < window.CONFIG.suggestionLimit) {
+			const ddgs = debounce(async () => {
+				const res = await fetchDuckDuckGoSuggestions(oq.search);
+				console.log(res);
+				suggestions = suggestions.concat(
+					oq.splitBy ? res.map((search: string) => `${oq.key}${oq.splitBy}${search}`) : res
+				);
+				const nq = parseQuery(target.value);
+				if (nq.query !== oq.query) return;
+				suggestion = [...suggestions];
+				selectedSuggestionIndex = null;
+				return;
+			}, 200);
+			ddgs();
+		}
+		suggestion = [oq.query, ...suggestions];
+		selectedSuggestionIndex = null;
 	};
 
 	const onKeyDown = (e: KeyboardEvent) => {
@@ -67,7 +86,7 @@
 		if (e.key === 'Enter') {
 			e.preventDefault();
 			// debug onliy
-			const url = 'https://duckduckgo.com/?q=' + input.value;
+			const { url } = parseQuery(input.value);
 			const target = window.CONFIG.openLinksInNewTab ? '_blank' : '_self';
 			window.open(url, target, 'noopener noreferrer');
 			closeDialog();
@@ -80,6 +99,44 @@
 			input.focus();
 			return;
 		}
+	};
+
+	const parseQuery = (raw: string) => {
+		const query = raw.trim();
+
+		if (isUrl(query)) {
+			const url = hasProtocol(query) ? query : `https://${query}`;
+			return { query, url };
+		}
+
+		if (window.CONFIG.commands[query]) {
+			const { command, key, url } = window.CONFIG.commands[query];
+			return command ? parseQuery(command) : { key, query, url };
+		}
+
+		let splitBy = window.CONFIG.commandSearchDelimiter;
+		const [searchKey, rawSearch] = query.split(new RegExp(`${splitBy}(.*)`));
+
+		if (window.CONFIG.commands[searchKey]) {
+			const { searchTemplate, url: base } = window.CONFIG.commands[searchKey];
+			const search = rawSearch.trim();
+			const url = formatSearchUrl(base, searchTemplate, search);
+			return { key: searchKey, query, search, splitBy, url };
+		}
+
+		splitBy = window.CONFIG.commandPathDelimiter;
+		const [pathKey, path] = query.split(new RegExp(`${splitBy}(.*)`));
+
+		if (window.CONFIG.commands[pathKey]) {
+			const { url: base } = window.CONFIG.commands[pathKey];
+			const [baseUrl] = splitUrl(base);
+			const url = `${baseUrl}/${path}`;
+			return { key: pathKey, path, query, splitBy, url };
+		}
+
+		const [baseUrl, rest] = splitUrl(window.CONFIG.defaultSearchTemplate);
+		const url = formatSearchUrl(baseUrl, rest, query);
+		return { query, search: query, url };
 	};
 
 	const updateValue = (value: string) => {

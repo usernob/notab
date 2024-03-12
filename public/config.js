@@ -20,9 +20,8 @@ window.CONFIG = {
       suggestions: ['r/r/webdev', 'r/r/dataisbeautiful', 'r/r/fujix', 'r/r/leetcode'],
       url: 'https://reddit.com',
     },
-    s: { name: 'Supabase', url: 'https://supabase.com/dashboard/projects' },
     t: { name: 'Translate', url: 'https://www.deepl.com/translator' },
-    v: { name: 'Vercel', url: 'https://vercel.com/dashboard' },
+    w: { name: 'WhatsApp', url: 'https://web.whatsapp.com' },
     y: {
       name: 'YouTube',
       searchTemplate: '/results?search_query={}',
@@ -34,5 +33,9 @@ window.CONFIG = {
       suggestions: ['0 54323', '0 54324'],
       url: 'http://localhost:3000',
     },
+    ym: {
+      name: 'YouTube Music',
+      url: 'https://music.youtube.com'
+    }
   },
 };

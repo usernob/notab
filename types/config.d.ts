@@ -69,6 +69,8 @@ interface Commands {
 }
 
 interface Command {
+  command?: string | null | undefined;
+  key?: string | null | undefined;
   /**
    * this is the name of the command
    *
