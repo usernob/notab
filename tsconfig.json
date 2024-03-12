@@ -19,6 +19,6 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte", "types/**/*.ts", "public/**/*.ts"],
+  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte", "types/**/*.ts", "public/**/*.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

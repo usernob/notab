@@ -11,17 +11,17 @@
 	let suggestion: string[] = [];
 	let selectedSuggestionIndex: number | null = null;
 
-  const fixInputHeight = (target: HTMLTextAreaElement) => {
+	const fixInputHeight = (target: HTMLTextAreaElement) => {
 		target.style.height = '0px';
 
 		target.style.height = `${target.scrollHeight}px`;
-  }
+	};
 
 	const onInput = async (e: Event) => {
 		const target = e.target as HTMLTextAreaElement;
 		if (target.value.length <= 0) return closeDialog();
 
-    fixInputHeight(target)
+		fixInputHeight(target);
 
 		const ddgs = debounce(async () => {
 			const ddgSuggestions = await fetchDuckDuckGoSuggestions(target.value);
@@ -64,15 +64,15 @@
 			return;
 		}
 
-    if(e.key === "Enter") {
-      e.preventDefault();
-      // debug onliy
-      const url = "https://duckduckgo.com/?q=" + input.value
-      const target = window.CONFIG.openLinksInNewTab ? '_blank' : '_self';
-      window.open(url, target, 'noopener noreferrer');
-      closeDialog();
-      return
-    }
+		if (e.key === 'Enter') {
+			e.preventDefault();
+			// debug onliy
+			const url = 'https://duckduckgo.com/?q=' + input.value;
+			const target = window.CONFIG.openLinksInNewTab ? '_blank' : '_self';
+			window.open(url, target, 'noopener noreferrer');
+			closeDialog();
+			return;
+		}
 
 		if (!show && String.fromCharCode(e.keyCode).match(/(\w|\s)/g)) {
 			show = true;
@@ -84,7 +84,7 @@
 
 	const updateValue = (value: string) => {
 		input.value = value;
-    fixInputHeight(input)
+		fixInputHeight(input);
 	};
 
 	const closeDialog = () => {
@@ -99,14 +99,18 @@
 
 <svelte:document on:keydown={onKeyDown} />
 <dialog bind:this={dialog} class="container">
-	<form autocomplete="off" class="py-2 bg-background" method="dialog" spellcheck="false">
+	<form autocomplete="off" class="bg-background py-2" method="dialog" spellcheck="false">
 		<textarea
 			bind:this={input}
 			on:input={onInput}
 			title="search"
-			class="resize-none w-full bg-background p-2 text-center text-5xl font-bold text-foreground-primary focus:outline-none"
+			class="w-full resize-none bg-background p-2 text-center text-5xl font-bold text-foreground-primary focus:outline-none"
 		></textarea>
 		<menu class="suggestions"></menu>
 	</form>
-	<Suggestion bind:data={suggestion} currIndex={selectedSuggestionIndex} onUpdateValue={updateValue} />
+	<Suggestion
+		bind:data={suggestion}
+		currIndex={selectedSuggestionIndex}
+		onUpdateValue={updateValue}
+	/>
 </dialog>
