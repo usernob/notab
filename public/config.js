@@ -34,7 +34,7 @@ window.CONFIG = {
       url: 'http://localhost:3000',
     },
     ym: {
-      name: 'YouTube Music',
+      name: 'YT Music',
       url: 'https://music.youtube.com'
     }
   },
