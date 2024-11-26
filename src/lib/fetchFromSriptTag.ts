@@ -7,12 +7,9 @@ export const fetchFromScriptTag = async <T>(
 
 		params['callback'] = 'autocompleteCallback';
 
-		let newUrl = url + '?';
-		for (const key in params) {
-			newUrl += `${key}=${params[key]}&`;
-		}
+		const newparam = new URLSearchParams(Object.entries(params)).toString()
 
-		script.src = newUrl;
+		script.src = `${url}?${newparam}`;
 		document.head.appendChild(script);
 
 		window['autocompleteCallback']<T> = (res: T) => {

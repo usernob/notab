@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && cp public/manifest.json dist/",
+    "firefox:start": "web-ext run --source-dir ./dist",
+    "firefox:lint": "web-ext lint --source-dir ./dist",
+    "firefox:bundle": "web-ext build --source-dir ./dist -o",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "format": "prettier --write src",
@@ -26,6 +29,7 @@
     "tslib": "^2.6.2",
     "typescript": "^5.2.2",
     "vite": "^5.1.4",
-    "vite-plugin-transform": "^2.0.1"
+    "vite-plugin-transform": "^2.0.1",
+    "web-ext": "^8.3.0"
   }
 }
